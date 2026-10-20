@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMART O'QUVCHI 2.0 — Zamonaviy Ta'lim Platformasi</title>
+  <meta name="description" content="O'quvchilar uchun zamonaviy, interaktiv va intellektual ta'lim boshqaruv platformasi. Testlar, vazifalar, dars jadvali va fokus taymeri.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Background Canvas & Glow Orbs -->
+  <div class="ambient-background">
+    <canvas id="ambient-canvas"></canvas>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+  </div>
+
+  <!-- Main Application Wrapper -->
+  <div class="app-layout">
+    
+    <!-- Left Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">
+          <div class="logo-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="logo-text">
+            <h2>SMART<span>O'QUVCHI</span></h2>
+            <span class="version-tag">2.0 PRO</span>
+          </div>
+        </div>
+        <button class="mobile-close-btn" id="mobile-sidebar-close" aria-label="Menyuni yopish">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- User mini profile card in sidebar -->
+      <div class="user-mini-card">
+        <div class="user-avatar-wrapper">
+          <div class="user-avatar" id="sidebar-avatar">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <span class="status-dot" title="Tizimda faol"></span>
+        </div>
+        <div class="user-info">
+          <h4 id="sidebar-user-name">Azizbek Olimov</h4>
+          <p id="sidebar-user-grade">10-sinf • A'lochi</p>
+        </div>
+        <div class="user-level-pill" id="sidebar-level-pill" title="Umumiy to'plangan tajriba balli">
+          <i class="fa-solid fa-bolt"></i> <span id="sidebar-xp">0 XP</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <p class="nav-section-title">ASOSIY MENYU</p>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <button class="nav-link active" data-view="dashboard">
+              <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+              <span class="nav-text">Bosh sahifa</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-view="quizzes">
+              <span class="nav-icon"><i class="fa-solid fa-brain"></i></span>
+              <span class="nav-text">Viktorinalar</span>
+              <span class="nav-badge pulse-badge" id="quiz-count-badge">4 fan</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-view="homework">
+              <span class="nav-icon"><i class="fa-solid fa-list-check"></i></span>
+              <span class="nav-text">Uy vazifalari</span>
+              <span class="nav-badge" id="pending-tasks-badge">0</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-view="timetable">
+              <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
+              <span class="nav-text">Dars jadvali</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-view="timer">
+              <span class="nav-icon"><i class="fa-solid fa-stopwatch"></i></span>
+              <span class="nav-text">Fokus taymer</span>
+              <span class="nav-badge live-badge" id="timer-live-badge"><i class="fa-solid fa-fire"></i></span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-view="analytics">
+              <span class="nav-icon"><i class="fa-solid fa-trophy"></i></span>
+              <span class="nav-text">Natijalar & Reyting</span>
+            </button>
+          </li>
+        </ul>
+
+        <p class="nav-section-title">SOZLANMALAR</p>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <button class="nav-link" data-view="settings">
+              <span class="nav-icon"><i class="fa-solid fa-sliders"></i></span>
+              <span class="nav-text">Sozlamalar</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar Bottom Controls -->
+      <div class="sidebar-footer">
+        <div class="sound-quick-toggle">
+          <button id="toggle-sound-btn" class="icon-toggle-btn" title="Ovoz effektlari">
+            <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+            <span id="sound-status-text">Ovoz: Yoqilgan</span>
+          </button>
+        </div>
+        <div class="app-motto">
+          <small>Bilim — kelajak kuchi</small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="top-nav-left">
+          <button class="mobile-menu-trigger" id="mobile-sidebar-toggle" aria-label="Menyuni ochish">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </button>
+          <div class="breadcrumb">
+            <span class="breadcrumb-item" id="current-view-title">Bosh sahifa</span>
+            <span class="breadcrumb-date" id="current-date-display">...</span>
+          </div>
+        </div>
+
+        <div class="top-nav-right">
+          <!-- Quick stats in header -->
+          <div class="header-stat-pill" title="O'rganish seriyasi">
+            <i class="fa-solid fa-fire-flame-curved text-warning"></i>
+            <span id="header-streak">1 kunlik seriya</span>
+          </div>
+          
+          <div class="header-stat-pill" title="Umumiy to'plangan ballar">
+            <i class="fa-solid fa-star text-accent"></i>
+            <span id="header-xp">0 XP</span>
+          </div>
+
+          <!-- Sound Toggle Button in Header -->
+          <button class="header-action-btn" id="header-sound-btn" title="Ovozni yoqish/o'chirish">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+
+          <!-- Notification Bell -->
+          <div class="notifications-wrapper">
+            <button class="header-action-btn" id="notification-btn" title="Bildirishnomalar">
+              <i class="fa-regular fa-bell"></i>
+              <span class="notification-dot" id="header-notif-dot"></span>
+            </button>
+            <div class="notifications-dropdown" id="notifications-dropdown">
+              <div class="dropdown-header">
+                <h5>Bildirishnomalar</h5>
+                <button class="clear-notifs-btn" id="clear-notifications">Tozalash</button>
+              </div>
+              <ul class="notification-list" id="notifications-list">
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- Top profile button that opens settings -->
+          <div class="profile-chip" id="profile-chip-btn">
+            <div class="avatar-small">
+              <i class="fa-solid fa-user-astronaut"></i>
+            </div>
+            <span class="user-chip-name" id="header-user-name">Azizbek</span>
+            <i class="fa-solid fa-chevron-right chevron-icon"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- View Containers Container -->
+      <div class="content-body">
+
+        <!-- ========================================== -->
+        <!-- VIEW 1: DASHBOARD                          -->
+        <!-- ========================================== -->
+        <section class="view-panel active" id="view-dashboard">
+          
+          <!-- Welcome Hero Banner -->
+          <div class="welcome-banner glass-card">
+            <div class="welcome-content">
+              <div class="greeting-tag">
+                <span class="pulse-indicator"></span>
+                <span id="greeting-time-text">Xayrli kun!</span>
+              </div>
+              <h1 class="welcome-heading">Assalomu alaykum, <span class="gradient-text" id="dash-greeting-name">Azizbek</span>! 👋</h1>
+              <p class="welcome-quote" id="daily-quote-text">"Ilm olish — igna bilan quduq qazish demakdir. Har bir o'rganilgan dars sizni buyuk maqsad sari yaqinlashtiradi."</p>
+              
+              <div class="hero-actions">
+                <button class="btn btn-primary" id="btn-quick-quiz">
+                  <i class="fa-solid fa-play"></i> Viktorina yechish
+                </button>
+                <button class="btn btn-secondary" id="btn-quick-task">
+                  <i class="fa-solid fa-plus"></i> Yangi vazifa qo'shish
+                </button>
+                <button class="btn btn-glass" id="btn-quick-timer">
+                  <i class="fa-solid fa-stopwatch"></i> Fokuslash
+                </button>
+              </div>
+            </div>
+            <div class="welcome-graphic">
+              <div class="floating-badge badge-1">
+                <i class="fa-solid fa-award"></i>
+                <span id="dash-level-title">Boshlang'ich bilimdon</span>
+              </div>
+              <div class="floating-badge badge-2">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span id="dash-today-focus-stat">0 daqiqa fokus</span>
+              </div>
+              <div class="glow-orb-small"></div>
+            </div>
+          </div>
+
+          <!-- Real-Time Statistics KPI Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card glass-card">
+              <div class="kpi-icon icon-purple">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-label">Umumiy Tajriba (XP)</span>
+                <h3 class="kpi-value" id="kpi-total-xp">0</h3>
+                <span class="kpi-trend positive" id="kpi-xp-trend"><i class="fa-solid fa-arrow-trend-up"></i> Haqiqiy faollik</span>
+              </div>
+            </div>
+
+            <div class="kpi-card glass-card">
+              <div class="kpi-icon icon-blue">
+                <i class="fa-solid fa-square-check"></i>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-label">Uy vazifalari</span>
+                <h3 class="kpi-value" id="kpi-tasks-ratio">0 / 0</h3>
+                <span class="kpi-trend" id="kpi-tasks-pct"><i class="fa-solid fa-circle-notch"></i> 0% bajarildi</span>
+              </div>
+            </div>
+
+            <div class="kpi-card glass-card">
+              <div class="kpi-icon icon-cyan">
+                <i class="fa-solid fa-brain"></i>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-label">Viktorinalar o'rtachasi</span>
+                <h3 class="kpi-value" id="kpi-quiz-avg">0%</h3>
+                <span class="kpi-trend" id="kpi-quiz-count"><i class="fa-solid fa-clipboard-check"></i> 0 ta test yechildi</span>
+              </div>
+            </div>
+
+            <div class="kpi-card glass-card">
+              <div class="kpi-icon icon-emerald">
+                <i class="fa-solid fa-hourglass-half"></i>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-label">Fokus vaqti</span>
+                <h3 class="kpi-value" id="kpi-focus-time">0 daq</h3>
+                <span class="kpi-trend" id="kpi-timer-sessions"><i class="fa-solid fa-fire"></i> 0 sessiya</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Two Column Dashboard Grid -->
+          <div class="dashboard-columns">
+            
+            <!-- Left Col: Daily Goals & Today's Schedule -->
+            <div class="dash-col">
+              
+              <!-- Daily Goals Widget -->
+              <div class="dashboard-widget glass-card">
+                <div class="widget-header">
+                  <div class="widget-title">
+                    <i class="fa-solid fa-bullseye text-accent"></i>
+                    <h3>Bugungi maqsadlar</h3>
+                  </div>
+                  <span class="progress-pill" id="goals-progress-pill">0% bajarildi</span>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="goal-progress-track">
+                  <div class="goal-progress-fill" id="goals-progress-bar" style="width: 0%;"></div>
+                </div>
+
+                <!-- Goals List -->
+                <ul class="goals-list" id="dashboard-goals-list">
+                  <!-- Dynamically generated -->
+                </ul>
+
+                <!-- Add goal quick form -->
+                <form class="add-goal-form" id="add-goal-form">
+                  <input type="text" id="goal-input-text" placeholder="Yangi kunlik maqsad yozing (masalan: 20 ta yangi so'z yodlash)..." maxlength="80" required>
+                  <button type="submit" class="btn btn-sm btn-primary">
+                    <i class="fa-solid fa-plus"></i> Qo'shish
+                  </button>
+                </form>
+              </div>
+
+              <!-- Today's Timetable Preview -->
+              <div class="dashboard-widget glass-card">
+                <div class="widget-header">
+                  <div class="widget-title">
+                    <i class="fa-solid fa-calendar-check text-blue"></i>
+                    <h3>Bugungi dars jadvali (<span id="dash-today-name">...</span>)</h3>
+                  </div>
+                  <button class="link-btn" id="link-to-timetable">To'liq jadval <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+                
+                <div class="today-timetable-list" id="dash-today-timetable">
+                  <!-- Dynamically rendered -->
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Right Col: Upcoming Tasks & Recent Quiz Results -->
+            <div class="dash-col">
+              
+              <!-- Priority Homework Tasks -->
+              <div class="dashboard-widget glass-card">
+                <div class="widget-header">
+                  <div class="widget-title">
+                    <i class="fa-solid fa-bell-concierge text-warning"></i>
+                    <h3>Dolzarb uy vazifalari</h3>
+                  </div>
+                  <button class="link-btn" id="link-to-homework">Barchasi <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+
+                <div class="dash-tasks-list" id="dash-upcoming-tasks">
+                  <!-- Dynamically rendered -->
+                </div>
+              </div>
+
+              <!-- Recent Quiz Performance -->
+              <div class="dashboard-widget glass-card">
+                <div class="widget-header">
+                  <div class="widget-title">
+                    <i class="fa-solid fa-chart-simple text-purple"></i>
+                    <h3>So'nggi viktorina natijalari</h3>
+                  </div>
+                  <button class="link-btn" id="link-to-quizzes">Testlar <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+
+                <div class="dash-quiz-results-list" id="dash-recent-quizzes">
+                  <!-- Dynamically rendered -->
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VIEW 2: QUIZZES (VIKTORINALAR)             -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-quizzes">
+          
+          <div class="section-hero glass-card">
+            <div class="section-hero-content">
+              <span class="section-tag"><i class="fa-solid fa-brain"></i> Bilimingizni sinang</span>
+              <h2>Fanlar Bo'yicha Interaktiv Viktorinalar</h2>
+              <p>Matematika, Ingliz tili, Ona tili va Informatika fanlaridan testlarni yeching, yangi XP ballarni to'plang va tushuntirishlar orqali xatolaringizni tahlil qiling.</p>
+            </div>
+            <div class="quiz-stat-pill-group">
+              <div class="pill-stat">
+                <span class="pill-val" id="quiz-stat-total-solved">0</span>
+                <span class="pill-lbl">Yechilgan testlar</span>
+              </div>
+              <div class="pill-stat">
+                <span class="pill-val" id="quiz-stat-high-score">0%</span>
+                <span class="pill-lbl">Eng yuqori natija</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter & Search Bar -->
+          <div class="filter-controls-bar glass-card">
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="quiz-search-input" placeholder="Fan yoki mavzu bo'yicha qidirish...">
+            </div>
+
+            <div class="category-tabs" id="quiz-category-tabs">
+              <button class="tab-btn active" data-category="all">Barchasi</button>
+              <button class="tab-btn" data-category="math"><i class="fa-solid fa-square-root-variable"></i> Matematika</button>
+              <button class="tab-btn" data-category="english"><i class="fa-solid fa-language"></i> Ingliz tili</button>
+              <button class="tab-btn" data-category="uzbek"><i class="fa-solid fa-book"></i> Ona tili</button>
+              <button class="tab-btn" data-category="it"><i class="fa-solid fa-code"></i> Informatika</button>
+            </div>
+          </div>
+
+          <!-- Quizzes Card Grid -->
+          <div class="quizzes-grid" id="quizzes-container">
+            <!-- Dynamically populated from JS -->
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VIEW 3: HOMEWORK (UY VAZIFALARI)          -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-homework">
+          
+          <div class="section-hero glass-card">
+            <div class="section-hero-content">
+              <span class="section-tag"><i class="fa-solid fa-list-check"></i> Reja va Tartib</span>
+              <h2>Uy Vazifalari Menejeri</h2>
+              <p>Dars va mustaqil topshiriqlarni belgilang, muddati bo'yicha tartiblang va o'z vaqtida bajarib intizomingizni oshiring.</p>
+            </div>
+            <button class="btn btn-primary" id="open-add-task-modal-btn">
+              <i class="fa-solid fa-plus"></i> Yangi vazifa qo'shish
+            </button>
+          </div>
+
+          <!-- Homework Controls Bar -->
+          <div class="task-controls-bar glass-card">
+            <div class="task-filter-pills" id="task-status-filters">
+              <button class="filter-pill active" data-filter="all">Barchasi (<span id="task-filter-all-cnt">0</span>)</button>
+              <button class="filter-pill" data-filter="pending">Faol (<span id="task-filter-pending-cnt">0</span>)</button>
+              <button class="filter-pill" data-filter="completed">Bajarilgan (<span id="task-filter-completed-cnt">0</span>)</button>
+            </div>
+
+            <div class="task-filter-right">
+              <div class="select-wrapper">
+                <i class="fa-solid fa-filter"></i>
+                <select id="task-subject-filter">
+                  <option value="all">Barcha fanlar</option>
+                  <option value="Matematika">Matematika</option>
+                  <option value="Ingliz tili">Ingliz tili</option>
+                  <option value="Ona tili">Ona tili</option>
+                  <option value="Informatika">Informatika</option>
+                  <option value="Fizika">Fizika</option>
+                  <option value="Kimyo">Kimyo</option>
+                  <option value="Tarix">Tarix</option>
+                  <option value="Biologiya">Biologiya</option>
+                  <option value="Boshqa">Boshqa</option>
+                </select>
+              </div>
+
+              <div class="select-wrapper">
+                <i class="fa-solid fa-arrow-down-short-wide"></i>
+                <select id="task-sort-by">
+                  <option value="date-asc">Muddat (Yaqinroq)</option>
+                  <option value="date-desc">Muddat (Kechroq)</option>
+                  <option value="priority">Muhimligi bo'yicha</option>
+                  <option value="created">Qo'shilgan vaqti</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Add Task Accordion / Inline Form -->
+          <div class="task-quick-add glass-card" id="task-add-container">
+            <div class="quick-add-header">
+              <h4><i class="fa-solid fa-pen-to-square text-accent"></i> Yangi vazifa yaratish</h4>
+            </div>
+            <form id="new-task-form" class="task-form-grid">
+              <div class="form-group form-group-span-2">
+                <label for="task-title">Vazifa mazmuni *</label>
+                <input type="text" id="task-title" placeholder="Masalan: Matematika 145-betdagi 12-18 misollarni yechish" required maxlength="120">
+              </div>
+
+              <div class="form-group">
+                <label for="task-subject">Fanni tanlang *</label>
+                <select id="task-subject" required>
+                  <option value="">Fanni tanlang</option>
+                  <option value="Matematika">Matematika</option>
+                  <option value="Ingliz tili">Ingliz tili</option>
+                  <option value="Ona tili">Ona tili va Adabiyot</option>
+                  <option value="Informatika">Informatika</option>
+                  <option value="Fizika">Fizika</option>
+                  <option value="Kimyo">Kimyo</option>
+                  <option value="Tarix">Tarix</option>
+                  <option value="Biologiya">Biologiya</option>
+                  <option value="Boshqa">Boshqa</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="task-due-date">Topshirish muddati *</label>
+                <input type="date" id="task-due-date" required>
+              </div>
+
+              <div class="form-group">
+                <label for="task-priority">Muhimlik darajasi</label>
+                <select id="task-priority">
+                  <option value="normal">Oddiy vazifa</option>
+                  <option value="important">Muhim ⭐</option>
+                  <option value="urgent">Shoshilinch / Nazorat ishi 🔥</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="task-notes">Qo'shimcha izoh (ixtiyoriy)</label>
+                <input type="text" id="task-notes" placeholder="Daftarga chizish, qoidalarni yod olish..." maxlength="100">
+              </div>
+
+              <div class="form-submit-row">
+                <button type="submit" class="btn btn-primary" id="save-task-btn">
+                  <i class="fa-solid fa-check"></i> Vazifani saqlash
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tasks List Display Container -->
+          <div class="tasks-container" id="tasks-list-container">
+            <!-- Dynamic task items injected via JS -->
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VIEW 4: TIMETABLE (DARS JADVALI)          -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-timetable">
+          
+          <div class="section-hero glass-card">
+            <div class="section-hero-content">
+              <span class="section-tag"><i class="fa-solid fa-calendar-week"></i> Haftalik Reja</span>
+              <h2>Haftalik Maktab Dars Jadvali</h2>
+              <p>Dushanbadan Shanbagacha bo'lgan darslaringizni, xonalar va o'qituvchilarni belgilang. Jadvalni istalgan vaqt tahrirlashingiz mumkin.</p>
+            </div>
+            <div class="timetable-actions">
+              <button class="btn btn-secondary" id="btn-load-sample-timetable">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Namuna jadval yuklash
+              </button>
+              <button class="btn btn-danger-ghost" id="btn-reset-timetable">
+                <i class="fa-solid fa-trash-can"></i> Tozalash
+              </button>
+            </div>
+          </div>
+
+          <!-- Day Navigation Tabs -->
+          <div class="timetable-days-nav glass-card" id="timetable-day-tabs">
+            <button class="day-tab-btn active" data-day="monday">Dushanba <span class="day-badge" id="badge-monday">0 dars</span></button>
+            <button class="day-tab-btn" data-day="tuesday">Seshanba <span class="day-badge" id="badge-tuesday">0 dars</span></button>
+            <button class="day-tab-btn" data-day="wednesday">Chorshanba <span class="day-badge" id="badge-wednesday">0 dars</span></button>
+            <button class="day-tab-btn" data-day="thursday">Payshanba <span class="day-badge" id="badge-thursday">0 dars</span></button>
+            <button class="day-tab-btn" data-day="friday">Juma <span class="day-badge" id="badge-friday">0 dars</span></button>
+            <button class="day-tab-btn" data-day="saturday">Shanba <span class="day-badge" id="badge-saturday">0 dars</span></button>
+          </div>
+
+          <!-- Day Timetable Display -->
+          <div class="timetable-day-view glass-card">
+            <div class="timetable-view-header">
+              <div class="active-day-heading">
+                <h3 id="current-timetable-day-title">Dushanba kungi darslar</h3>
+                <span class="current-day-indicator" id="is-today-indicator"><i class="fa-solid fa-star"></i> Bugun</span>
+              </div>
+              <button class="btn btn-sm btn-primary" id="btn-add-lesson-slot">
+                <i class="fa-solid fa-plus"></i> Dars qo'shish
+              </button>
+            </div>
+
+            <!-- Lessons Grid / List -->
+            <div class="lessons-schedule-list" id="lessons-schedule-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VIEW 5: TIMER (FOKUS TAYMERI)              -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-timer">
+          
+          <div class="timer-layout">
+            
+            <div class="timer-main-card glass-card">
+              
+              <!-- Timer Mode Tabs -->
+              <div class="timer-modes-bar" id="timer-modes-bar">
+                <button class="timer-mode-btn active" data-mode="pomodoro">
+                  <i class="fa-solid fa-brain"></i> Fokus (25 daq)
+                </button>
+                <button class="timer-mode-btn" data-mode="short-break">
+                  <i class="fa-solid fa-mug-hot"></i> Qisqa tanaffus (5 daq)
+                </button>
+                <button class="timer-mode-btn" data-mode="long-break">
+                  <i class="fa-solid fa-tree"></i> Katta tanaffus (15 daq)
+                </button>
+                <button class="timer-mode-btn" data-mode="custom">
+                  <i class="fa-solid fa-sliders"></i> Maxsus
+                </button>
+              </div>
+
+              <!-- Circular Progress Display -->
+              <div class="timer-display-wrapper">
+                <svg class="timer-svg" viewBox="0 0 300 300">
+                  <defs>
+                    <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#8b5cf6" />
+                      <stop offset="50%" stop-color="#3b82f6" />
+                      <stop offset="100%" stop-color="#06b6d4" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Background Track Circle -->
+                  <circle class="timer-circle-bg" cx="150" cy="150" r="130"></circle>
+                  <!-- Animated Progress Circle -->
+                  <circle class="timer-circle-progress" id="timer-progress-ring" cx="150" cy="150" r="130"></circle>
+                </svg>
+
+                <div class="timer-inner-info">
+                  <span class="timer-mode-tag" id="timer-mode-label">FOKUS VAQTI</span>
+                  <div class="timer-digits" id="timer-digits">25:00</div>
+                  <span class="timer-status-hint" id="timer-status-hint">Tayyormisiz? Boshlashni bosing!</span>
+                </div>
+              </div>
+
+              <!-- Custom Minute Input (Hidden by default, shown when custom mode selected) -->
+              <div class="custom-timer-inputs hidden" id="custom-timer-inputs">
+                <label for="custom-minutes-input">Maxsus vaqt (daqiqa):</label>
+                <input type="number" id="custom-minutes-input" min="1" max="120" value="30">
+                <button class="btn btn-sm btn-secondary" id="apply-custom-timer-btn">O'rnatish</button>
+              </div>
+
+              <!-- Timer Main Controls -->
+              <div class="timer-controls">
+                <button class="timer-btn timer-btn-reset" id="timer-reset-btn" title="Qayta o'rnatish">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+                
+                <button class="timer-btn timer-btn-main" id="timer-start-pause-btn">
+                  <i class="fa-solid fa-play" id="timer-play-icon"></i>
+                  <span id="timer-play-text">Boshlash</span>
+                </button>
+
+                <button class="timer-btn timer-btn-skip" id="timer-skip-btn" title="O'tkazib yuborish">
+                  <i class="fa-solid fa-forward-step"></i>
+                </button>
+              </div>
+
+              <!-- Ambient Audio / White Noise Toggle -->
+              <div class="timer-ambient-controls">
+                <div class="ambient-option">
+                  <label class="switch-toggle">
+                    <input type="checkbox" id="timer-sound-ticking">
+                    <span class="slider-round"></span>
+                  </label>
+                  <span><i class="fa-solid fa-volume-low"></i> Sekundomer ovozi</span>
+                </div>
+                <div class="ambient-option">
+                  <label class="switch-toggle">
+                    <input type="checkbox" id="timer-ambient-synth">
+                    <span class="slider-round"></span>
+                  </label>
+                  <span><i class="fa-solid fa-water"></i> Fokuslovchi sokin tovush</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Timer Side Info & Session Stats -->
+            <div class="timer-side-panel">
+              
+              <div class="timer-info-card glass-card">
+                <div class="card-header-simple">
+                  <i class="fa-solid fa-fire text-warning"></i>
+                  <h4>Bugungi Fokus Statistikasi</h4>
+                </div>
+                
+                <div class="timer-session-stats">
+                  <div class="session-stat-box">
+                    <span class="stat-number" id="timer-stat-sessions">0</span>
+                    <span class="stat-caption">Yakunlangan sessiyalar</span>
+                  </div>
+                  <div class="session-stat-box">
+                    <span class="stat-number" id="timer-stat-total-mins">0 daq</span>
+                    <span class="stat-caption">Umumiy fokus vaqti</span>
+                  </div>
+                </div>
+
+                <div class="session-progress-info">
+                  <div class="sess-prog-label">
+                    <span>Kunlik me'yor (4 sessiya / 100 daq)</span>
+                    <span id="timer-target-pct">0%</span>
+                  </div>
+                  <div class="goal-progress-track">
+                    <div class="goal-progress-fill" id="timer-target-bar" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pomodoro Tips in Uzbek -->
+              <div class="timer-info-card glass-card">
+                <div class="card-header-simple">
+                  <i class="fa-solid fa-lightbulb text-accent"></i>
+                  <h4>Fokus bo'yicha maslahatlar</h4>
+                </div>
+                <ul class="pomodoro-tips-list">
+                  <li><i class="fa-solid fa-circle-check text-emerald"></i> <strong>25 daqiqa</strong> davomida telefon va ijtimoiy tarmoqlarni chetga suring.</li>
+                  <li><i class="fa-solid fa-circle-check text-emerald"></i> Har bir sessiyadan so'ng <strong>5 daqiqa</strong> dam oling, suv iching yoki yengil mashq qiling.</li>
+                  <li><i class="fa-solid fa-circle-check text-emerald"></i> 4 ta fokus sessiyasidan so'ng <strong>15-20 daqiqalik</strong> katta tanaffus qiling.</li>
+                </ul>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VIEW 6: ANALYTICS (NATIJALAR & REYTING)    -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-analytics">
+          
+          <div class="section-hero glass-card">
+            <div class="section-hero-content">
+              <span class="section-tag"><i class="fa-solid fa-chart-line"></i> Tahlil va Yutuqlar</span>
+              <h2>O'quv Faolligi va Yutuqlar Doskasi</h2>
+              <p>Barcha ko'rsatkichlaringiz haqiqiy harakatlaringiz — yechilgan testlar, bajarilgan vazifalar va fokus vaqtingizdan aniq hisoblab boriladi.</p>
+            </div>
+            <div class="total-rank-badge">
+              <i class="fa-solid fa-medal"></i>
+              <div>
+                <span class="badge-sub">DARAXT DARAJASI</span>
+                <h4 id="analytics-rank-title">Bilim Cho'qqisi Sari</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subject Mastery Bars -->
+          <div class="analytics-row glass-card">
+            <div class="widget-header">
+              <div class="widget-title">
+                <i class="fa-solid fa-layer-group text-accent"></i>
+                <h3>Fanlar kesimida o'zlashtirish darajasi</h3>
+              </div>
+            </div>
+
+            <div class="subject-bars-grid" id="subject-mastery-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Badges & Achievements -->
+          <div class="analytics-row glass-card">
+            <div class="widget-header">
+              <div class="widget-title">
+                <i class="fa-solid fa-trophy text-warning"></i>
+                <h3>Qo'lga kiritilgan nishonlar va yutuqlar</h3>
+              </div>
+              <span class="badges-counter" id="unlocked-badges-count">0 / 6 ochildi</span>
+            </div>
+
+            <div class="badges-grid" id="achievements-container">
+              <!-- Dynamically populated achievements -->
+            </div>
+          </div>
+
+          <!-- Quizzes History Log -->
+          <div class="analytics-row glass-card">
+            <div class="widget-header">
+              <div class="widget-title">
+                <i class="fa-solid fa-clock-rotate-left text-blue"></i>
+                <h3>Barcha yechilgan testlar tarixi</h3>
+              </div>
+              <button class="btn btn-sm btn-glass" id="btn-clear-quiz-history">
+                <i class="fa-solid fa-trash-can"></i> Tarixni tozalash
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="custom-table" id="quiz-history-table">
+                <thead>
+                  <tr>
+                    <th>Sana va vaqt</th>
+                    <th>Fan</th>
+                    <th>Viktorina mavzusi</th>
+                    <th>To'g'ri / Umumiy</th>
+                    <th>Foiz</th>
+                    <th>Olingan XP</th>
+                  </tr>
+                </thead>
+                <tbody id="quiz-history-tbody">
+                  <!-- Dynamic rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VIEW 7: SETTINGS (SOZLAMALAR)              -->
+        <!-- ========================================== -->
+        <section class="view-panel" id="view-settings">
+          
+          <div class="section-hero glass-card">
+            <div class="section-hero-content">
+              <span class="section-tag"><i class="fa-solid fa-sliders"></i> Shaxsiylashtirish</span>
+              <h2>Tizim va Profil Sozlamalari</h2>
+              <p>O'quvchi ma'lumotlarini tahrirlang, ovoz effektlarini boshqaring va platforma parametrlarini moslashtiring.</p>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            
+            <!-- Profile Settings Form -->
+            <div class="settings-card glass-card">
+              <div class="settings-card-header">
+                <i class="fa-solid fa-user-pen text-accent"></i>
+                <h3>O'quvchi Profili</h3>
+              </div>
+
+              <form id="settings-profile-form">
+                <div class="form-group">
+                  <label for="settings-name-input">Ism va familiya</label>
+                  <input type="text" id="settings-name-input" value="Azizbek Olimov" required maxlength="40">
+                </div>
+
+                <div class="form-group">
+                  <label for="settings-grade-input">Sinf / Guruh</label>
+                  <input type="text" id="settings-grade-input" value="10-sinf" required maxlength="30">
+                </div>
+
+                <div class="form-group">
+                  <label for="settings-school-input">Maktab / Litsey</label>
+                  <input type="text" id="settings-school-input" value="23-sonli ixtisoslashtirilgan maktab" maxlength="60">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa-solid fa-floppy-disk"></i> Profilni saqlash
+                </button>
+              </form>
+            </div>
+
+            <!-- Appearance & Audio Settings -->
+            <div class="settings-card glass-card">
+              <div class="settings-card-header">
+                <i class="fa-solid fa-sliders text-blue"></i>
+                <h3>Ovoz va Effektlar</h3>
+              </div>
+
+              <div class="settings-options-list">
+                
+                <div class="setting-item">
+                  <div class="setting-text">
+                    <strong>Interaktiv tovush effektlari</strong>
+                    <p>Tugmalar, test natijalari va taymer signallari uchun sintetik musiqiy ovozlar.</p>
+                  </div>
+                  <label class="switch-toggle">
+                    <input type="checkbox" id="settings-sound-switch" checked>
+                    <span class="slider-round"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-text">
+                    <strong>Neon porlash effektlari</strong>
+                    <p>Zamonaviy orqa fon nurlari va shisha dizaynini faol saqlash.</p>
+                  </div>
+                  <label class="switch-toggle">
+                    <input type="checkbox" id="settings-glow-switch" checked>
+                    <span class="slider-round"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-text">
+                    <strong>Harakatlanuvchi zarrachalar</strong>
+                    <p>Fon animatsiyasi va suzuvchi zarralar.</p>
+                  </div>
+                  <label class="switch-toggle">
+                    <input type="checkbox" id="settings-particles-switch" checked>
+                    <span class="slider-round"></span>
+                  </label>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Data Management Card -->
+            <div class="settings-card glass-card settings-card-full">
+              <div class="settings-card-header">
+                <i class="fa-solid fa-database text-warning"></i>
+                <h3>Ma'lumotlar Boshqaruvi (LocalStorage)</h3>
+              </div>
+              <p class="settings-desc">Barcha ma'lumotlaringiz (vazifalar, dars jadvali, test natijalari, ballar) xavfsiz tarzda brauzeringizning ichki xotirasida saqlanadi. Hech qanday tashqi pullik serverlar yoki API talab etilmaydi.</p>
+
+              <div class="data-actions-row">
+                <button class="btn btn-secondary" id="btn-export-data">
+                  <i class="fa-solid fa-download"></i> Ma'lumotlarni nusxalash (Eksport)
+                </button>
+                <button class="btn btn-secondary" id="btn-reload-demo">
+                  <i class="fa-solid fa-rotate-left"></i> Namuna ma'lumotlarni tiklash
+                </button>
+                <button class="btn btn-danger" id="btn-wipe-all-data">
+                  <i class="fa-solid fa-triangle-exclamation"></i> Barcha ma'lumotlarni o'chirish
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+      </div> <!-- /content-body -->
+
+    </main>
+
+  </div> <!-- /app-layout -->
+
+  <!-- ============================================================ -->
+  <!-- MODAL: ACTIVE QUIZ PLAYER                                    -->
+  <!-- ============================================================ -->
+  <div class="modal-overlay hidden" id="quiz-player-modal">
+    <div class="modal-card quiz-player-card glass-card">
+      
+      <!-- Quiz Header -->
+      <div class="quiz-player-header">
+        <div class="quiz-badge-wrap">
+          <span class="quiz-subject-badge" id="player-subject-badge">Matematika</span>
+          <span class="quiz-title-text" id="player-quiz-title">Algebra asoslari</span>
+        </div>
+        <div class="quiz-player-controls">
+          <div class="quiz-timer-pill" id="player-timer-pill">
+            <i class="fa-solid fa-stopwatch"></i> <span id="player-timer-text">00:00</span>
+          </div>
+          <button class="modal-close-icon" id="player-exit-btn" title="Viktorinadan chiqish">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="quiz-progress-track">
+        <div class="quiz-progress-fill" id="player-progress-fill" style="width: 20%;"></div>
+      </div>
+      <div class="quiz-progress-labels">
+        <span id="player-question-counter">Savol: 1 / 5</span>
+        <span id="player-score-tracker"><i class="fa-solid fa-star text-accent"></i> Har bir to'g'ri javob: +20 XP</span>
+      </div>
+
+      <!-- Question Text Container -->
+      <div class="question-container">
+        <h3 class="question-text" id="player-question-text">Savol matni yuklanmoqda...</h3>
+      </div>
+
+      <!-- Multiple Choice Options -->
+      <div class="options-container" id="player-options-container">
+        <!-- 4 Option buttons dynamically rendered -->
+      </div>
+
+      <!-- Quiz Navigation Footer -->
+      <div class="quiz-player-footer">
+        <div class="quiz-validation-hint" id="player-validation-hint">
+          <span><i class="fa-solid fa-info-circle"></i> Iltimos, davom etish uchun javob variantlaridan birini tanlang.</span>
+        </div>
+        <button class="btn btn-primary btn-next-question" id="player-next-btn" disabled>
+          Keyingi savol <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL: QUIZ RESULTS & EXPLANATIONS SCREEN                   -->
+  <!-- ============================================================ -->
+  <div class="modal-overlay hidden" id="quiz-results-modal">
+    <div class="modal-card quiz-results-card glass-card">
+      
+      <div class="results-header">
+        <div class="results-trophy-icon" id="results-icon-wrap">
+          <i class="fa-solid fa-award"></i>
+        </div>
+        <h2 id="results-headline">Viktorina Yakunlandi!</h2>
+        <p class="results-sub" id="results-submessage">Natijangiz hisoblandi va saqlandi.</p>
+      </div>
+
+      <!-- Score Summary Graphic -->
+      <div class="results-score-circle">
+        <div class="score-number" id="results-percentage">80%</div>
+        <div class="score-details" id="results-fraction">4 / 5 to'g'ri topildi</div>
+      </div>
+
+      <!-- Reward XP Pill -->
+      <div class="results-xp-award">
+        <i class="fa-solid fa-bolt"></i>
+        <span>Qo'lga kiritilgan ball: <strong id="results-earned-xp">+80 XP</strong></span>
+      </div>
+
+      <!-- Review Questions & Detailed Explanations -->
+      <div class="results-breakdown-section">
+        <h4><i class="fa-solid fa-clipboard-question text-accent"></i> Savollar va To'g'ri Javoblar Tushuntirishi</h4>
+        <div class="explanations-list" id="results-explanations-list">
+          <!-- Dynamically populated with question cards, user answers, correct answers and detailed Uzbek explanations -->
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="results-actions">
+        <button class="btn btn-secondary" id="btn-retake-quiz">
+          <i class="fa-solid fa-rotate-left"></i> Qayta topshirish
+        </button>
+        <button class="btn btn-primary" id="btn-close-results">
+          <i class="fa-solid fa-house"></i> Bosh sahifaga qaytish
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL: ADD / EDIT TIMETABLE LESSON                           -->
+  <!-- ============================================================ -->
+  <div class="modal-overlay hidden" id="lesson-modal">
+    <div class="modal-card modal-card-sm glass-card">
+      <div class="modal-header">
+        <h3 id="lesson-modal-title"><i class="fa-solid fa-book-open text-accent"></i> Darsni Tahrirlash</h3>
+        <button class="modal-close-icon" id="lesson-modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="lesson-form">
+        <input type="hidden" id="lesson-slot-index">
+        <input type="hidden" id="lesson-day-key">
+
+        <div class="form-group">
+          <label for="lesson-slot-time">Dars soati / tartibi</label>
+          <input type="text" id="lesson-slot-time" readonly class="input-readonly">
+        </div>
+
+        <div class="form-group">
+          <label for="lesson-subject-input">Fan nomi *</label>
+          <input type="text" id="lesson-subject-input" placeholder="Masalan: Fizika" required maxlength="40">
+        </div>
+
+        <div class="form-group">
+          <label for="lesson-room-input">Xona / Kabinet</label>
+          <input type="text" id="lesson-room-input" placeholder="Masalan: 204-xona" maxlength="20">
+        </div>
+
+        <div class="form-group">
+          <label for="lesson-teacher-input">O'qituvchi (F.I.SH)</label>
+          <input type="text" id="lesson-teacher-input" placeholder="Masalan: Karimova Z.R." maxlength="40">
+        </div>
+
+        <div class="modal-actions-split">
+          <button type="button" class="btn btn-danger-ghost" id="btn-clear-lesson-slot">
+            <i class="fa-solid fa-eraser"></i> Bo'shatish
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-check"></i> Saqlash
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TOAST NOTIFICATION CONTAINER                                 -->
+  <!-- ============================================================ -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Canvas Confetti Library CDN with local fallback -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Main JavaScript Application -->
+  <script src="script.js"></script>
+</body>
+</html>
