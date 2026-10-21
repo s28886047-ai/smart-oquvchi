@@ -1,0 +1,625 @@
+/* SMARTVERSE Games Hub & Game-Specific Styles */
+
+/* 1. Games Hub Grid */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.game-hub-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-hub-thumb {
+    height: 180px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.game-hub-icon {
+    font-size: 4.5rem;
+    transition: var(--transition);
+}
+
+.game-hub-card:hover .game-hub-icon {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.game-hub-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.game-hub-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.game-hub-title {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+}
+
+.game-hub-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.game-hub-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.game-high-score-tag {
+    font-size: 0.82rem;
+    color: var(--gold);
+    font-weight: 700;
+}
+
+/* 2. Common Game Overlay Modal */
+.game-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(4, 7, 20, 0.92);
+    backdrop-filter: blur(18px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.game-modal.active {
+    display: flex;
+}
+
+.game-container {
+    background: #0d122b;
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 600px;
+    max-height: 94vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+.game-header {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.game-title {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 3. Screen States (Start, HUD, GameOver) */
+.game-screen {
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.game-intro-icon {
+    font-size: 4rem;
+    margin-bottom: 12px;
+}
+
+.game-intro-title {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+}
+
+.game-intro-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+    max-width: 440px;
+}
+
+.game-rules-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 18px 24px;
+    text-align: left;
+    margin-bottom: 28px;
+    width: 100%;
+    max-width: 440px;
+}
+
+.rules-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.rules-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.rules-list li::before {
+    content: "⚡ ";
+    color: var(--primary);
+}
+
+/* Common HUD Bar */
+.game-hud {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--border-light);
+    width: 100%;
+}
+
+.hud-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.hud-item .val {
+    color: var(--primary);
+}
+
+/* Game Over / Win Screens */
+.game-over-screen {
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.game-over-icon {
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+}
+
+.game-over-title {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+}
+
+.game-over-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+.game-stats-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    width: 100%;
+    max-width: 380px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.game-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.game-stat-item .val {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.game-stat-item .lbl {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.game-rewards-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.game-reward-pill {
+    padding: 6px 16px;
+    background: rgba(0, 242, 254, 0.15);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--primary);
+}
+
+/* 4. Car Racing Game Specifics */
+.car-game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background: #080a18;
+}
+
+#car-game-canvas {
+    display: block;
+    max-width: 100%;
+    box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
+}
+
+.car-touch-controls {
+    display: none;
+    width: 100%;
+    padding: 14px 20px;
+    justify-content: space-between;
+    gap: 20px;
+    background: rgba(10, 14, 34, 0.9);
+}
+
+.car-touch-btn {
+    flex: 1;
+    height: 56px;
+    border-radius: var(--radius-md);
+    background: rgba(0, 242, 254, 0.15);
+    border: 2px solid var(--primary);
+    color: #ffffff;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.car-touch-btn:active {
+    background: var(--primary);
+    color: #000000;
+}
+
+/* 5. Memory Match Game Specifics */
+.memory-diff-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.memory-diff-btn {
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.memory-diff-btn.active {
+    background: var(--gradient-primary);
+    color: #000000;
+    border-color: transparent;
+}
+
+.memory-grid {
+    display: grid;
+    gap: 12px;
+    padding: 20px;
+    justify-content: center;
+    max-width: 520px;
+    margin: 0 auto;
+    perspective: 1000px;
+}
+
+.grid-easy {
+    grid-template-columns: repeat(4, 76px);
+}
+
+.grid-medium {
+    grid-template-columns: repeat(4, 76px);
+}
+
+.grid-hard {
+    grid-template-columns: repeat(5, 72px);
+}
+
+.memory-card {
+    height: 90px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.memory-card.flipped .card-inner,
+.memory-card.matched .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card-front {
+    background: linear-gradient(135deg, #1b1e42 0%, #10122e 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.card-emblem {
+    font-size: 1.5rem;
+    opacity: 0.6;
+}
+
+.card-back {
+    background: linear-gradient(135deg, #2b1f63 0%, #18113c 100%);
+    border: 2px solid var(--primary);
+    transform: rotateY(180deg);
+}
+
+.card-symbol {
+    font-size: 2.2rem;
+}
+
+.memory-card.matched .card-back {
+    border-color: var(--success);
+    background: linear-gradient(135deg, #094a30 0%, #062b1b 100%);
+    animation: popSuccess 0.4s ease-out;
+}
+
+.memory-stars-row {
+    font-size: 2.5rem;
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+/* 6. Speed Math Game Specifics */
+.math-play-area {
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.math-problem-box {
+    background: linear-gradient(135deg, #1e1346 0%, #100f2e 100%);
+    border: 2px solid var(--secondary);
+    border-radius: var(--radius-lg);
+    padding: 24px 40px;
+    box-shadow: 0 0 30px var(--secondary-glow);
+    margin-bottom: 30px;
+    min-width: 260px;
+    text-align: center;
+}
+
+.math-problem-text {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.math-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 420px;
+}
+
+.math-option-btn {
+    padding: 20px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    color: #ffffff;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.math-option-btn:hover {
+    background: rgba(0, 242, 254, 0.15);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.math-option-btn.correct {
+    background: var(--success) !important;
+    color: #000000 !important;
+}
+
+.math-option-btn.wrong {
+    background: var(--danger) !important;
+    color: #ffffff !important;
+}
+
+/* 7. Word Puzzle Game Specifics */
+.word-play-area {
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.word-clue-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    text-align: center;
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.word-category-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(157, 78, 221, 0.25);
+    border: 1px solid var(--secondary);
+    color: var(--secondary);
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.word-clue-text {
+    font-size: 1.05rem;
+    color: #ffffff;
+}
+
+.word-target-slots {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    min-height: 56px;
+}
+
+.word-slot {
+    width: 46px;
+    height: 54px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    transition: var(--transition);
+}
+
+.word-slot.empty {
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+}
+
+.word-slot.filled {
+    background: var(--gradient-primary);
+    color: #000000;
+    border: 2px solid var(--primary);
+    box-shadow: 0 4px 14px var(--primary-glow);
+    cursor: pointer;
+}
+
+.word-letter-bank {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    max-width: 480px;
+}
+
+.word-letter-tile {
+    width: 48px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.word-letter-tile:hover:not(:disabled) {
+    background: rgba(0, 242, 254, 0.2);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.word-letter-tile.used {
+    opacity: 0.2;
+    cursor: default;
+    transform: none !important;
+}
+
+.word-controls-row {
+    display: flex;
+    gap: 12px;
+}
+
+@media (max-width: 480px) {
+    .grid-easy, .grid-medium {
+        grid-template-columns: repeat(4, 64px);
+    }
+    .grid-hard {
+        grid-template-columns: repeat(5, 56px);
+    }
+    .memory-card {
+        height: 76px;
+    }
+    .card-symbol {
+        font-size: 1.8rem;
+    }
+    .word-slot, .word-letter-tile {
+        width: 38px;
+        height: 46px;
+        font-size: 1.2rem;
+    }
+}
